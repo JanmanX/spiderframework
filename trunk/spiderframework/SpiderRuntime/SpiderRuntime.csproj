@@ -1,0 +1,103 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7ECDD818-1493-4C43-807B-97ADA6D86B52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>fox.spider.runtime</RootNamespace>
+    <AssemblyName>Spider.Runtime</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxSHDocVw, Version=1.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SpiderFramework\bin\Release\AxSHDocVw.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="SHDocVw, Version=1.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SpiderFramework\bin\Release\SHDocVw.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="pageturners\DataTablePageTurner.cs" />
+    <Compile Include="pageturners\UrlPageTurner.cs" />
+    <Compile Include="PageTurnerHolder.cs" />
+    <Compile Include="providers\AbstractDocumentParserProvider.cs" />
+    <Compile Include="providers\AbstractFlowProvider.cs" />
+    <Compile Include="providers\AbstractProvider.cs" />
+    <Compile Include="providers\AbstractRowFilterProvider.cs" />
+    <Compile Include="providers\AttributeRowContentParserProvider.cs" />
+    <Compile Include="providers\CellBasedDocumentParserProvider.cs" />
+    <Compile Include="providers\ConstantsRowContentParserProvider.cs" />
+    <Compile Include="providers\DataTableWebPageTurnerProvider.cs" />
+    <Compile Include="providers\DefaultTableProvider.cs" />
+    <Compile Include="providers\ForeignKeyRelationProcessorProvider.cs" />
+    <Compile Include="providers\LinkedWebPageTurnerProvider.cs" />
+    <Compile Include="providers\NamedWebPageTurnerProvider.cs" />
+    <Compile Include="providers\PriorityXPathRowContentParserProvider.cs" />
+    <Compile Include="providers\RegexRowContentParserProvider.cs" />
+    <Compile Include="providers\RepeaterDocumentParserProvider.cs" />
+    <Compile Include="providers\RepeaterRowContentParserProvider.cs" />
+    <Compile Include="providers\TableDocumentParserProvider.cs" />
+    <Compile Include="providers\UrlWebPageTurnerProvider.cs" />
+    <Compile Include="providers\ValueFilterProvider.cs" />
+    <Compile Include="providers\XPathRowContentParserProvider.cs" />
+    <Compile Include="utils\FlowResourcePool.cs" />
+    <Compile Include="interfaces\IDocumentParserProvider.cs" />
+    <Compile Include="interfaces\IFlowResourceProvider.cs" />
+    <Compile Include="interfaces\IFlowUnit.cs" />
+    <Compile Include="interfaces\IRelationProvider.cs" />
+    <Compile Include="interfaces\IGlobalResourceProvider.cs" />
+    <Compile Include="interfaces\IRowContentParserProvider.cs" />
+    <Compile Include="interfaces\IRowFilter.cs" />
+    <Compile Include="interfaces\IRowFilterProvider.cs" />
+    <Compile Include="interfaces\IRuntimeUnit.cs" />
+    <Compile Include="interfaces\ITableProvider.cs" />
+    <Compile Include="interfaces\IWebPageTurnerProvider.cs" />
+    <Compile Include="filters\ValueFilter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderFactory.cs" />
+    <Compile Include="SpiderFlow.cs" />
+    <Compile Include="SpiderRuntime.cs" />
+    <Compile Include="constants\SpiderRuntimeConstants.cs" />
+    <Compile Include="utils\GlobalResourcePool.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpiderFramework\SpiderFramework.csproj">
+      <Project>{CAB75786-2FA7-4C52-B4BC-811A9F3F6997}</Project>
+      <Name>SpiderFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

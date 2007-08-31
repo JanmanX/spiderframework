@@ -1,0 +1,69 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{30328492-14C5-4D8F-8F22-8701C7C1914A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>fox.spider.path</RootNamespace>
+    <AssemblyName>Spider.Path</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="core\FormalizerHelper.cs" />
+    <Compile Include="core\SPathFormalizer.cs" />
+    <Compile Include="core\SPathFunction.cs" />
+    <Compile Include="core\SPathPredicate.cs" />
+    <Compile Include="core\SPathTokenProcessor.cs" />
+    <Compile Include="core\TokenHelper.cs" />
+    <Compile Include="impl\AbstractAxis.cs" />
+    <Compile Include="impl\AbstractPredicate.cs" />
+    <Compile Include="impl\AttributeAxis.cs" />
+    <Compile Include="impl\CurrentAxis.cs" />
+    <Compile Include="impl\FollowingPrecedingSiblingAxis.cs" />
+    <Compile Include="impl\FollowingSiblingAxis.cs" />
+    <Compile Include="impl\IndexFormalizer.cs" />
+    <Compile Include="impl\IndexPredicate.cs" />
+    <Compile Include="impl\LastChildAxis.cs" />
+    <Compile Include="impl\NamedAxis.cs" />
+    <Compile Include="impl\ParentAxis.cs" />
+    <Compile Include="impl\PrecedingSiblingAxis.cs" />
+    <Compile Include="SPath.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="core\SPathAxis.cs" />
+    <Compile Include="utils\Utilities.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

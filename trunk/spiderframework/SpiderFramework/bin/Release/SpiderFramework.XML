@@ -1,0 +1,1642 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpiderFramework</name>
+    </assembly>
+    <members>
+        <member name="T:fox.spider.RowParsedEvent">
+            <summary>
+            IDocumentParser dispatches an event named RowParsed with this delegation, 
+            while a data row is parsed. User may use this event dispatch delegation to check
+            whether data is correct or not.
+            </summary>
+            <param name="sender">The object who sends this event.</param>
+            <param name="row">a data row object parsed by sender. </param>
+            <returns>if data in DataRow is correct, return true. Otherwise it returns false.</returns>
+            <seealso cref="T:fox.spider.IDocumentParser"/>
+        </member>
+        <member name="T:fox.spider.IDocumentParser">
+            <summary>
+            IDocumentParser implementor is responsible for analyzing HTML Document to find out 
+            data element which is a IHTMLDOMNode. Each data element maps to a data row. While
+            a data element is parsed, IDocumentParser delegates data field analyzing to 
+            IElementRowContentParser.
+            <br/>
+            IDocumentParser is responsible for finding out a data row from HTML Document, 
+            and IElementRowContentParser is responsible for finding data field from IHTMLDOMNode
+            </summary>
+            <seealso cref="T:fox.spider.IElementRowContentParser"/>
+        </member>
+        <member name="T:fox.spider.IChain">
+            <summary>
+            IChain uses Chain of Responsibility pattern. Each IChain implementor 
+            has its owned logics and storage model. Every IChain implementor may
+            have equivalent power to process reponsible job.
+            </summary>
+        </member>
+        <member name="M:fox.spider.IChain.next">
+            <summary>
+            Returns next IChain implementor. If it doesn't have it, return null.
+            </summary>
+            <returns>next IChain object.</returns>
+        </member>
+        <member name="M:fox.spider.IChain.setNext(fox.spider.IChain)">
+            <summary>
+            set next IChain implementor.
+            </summary>
+            <param name="next">next IChan implementor</param>
+        </member>
+        <member name="M:fox.spider.IDocumentParser.parse(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            analyze HTML Document in HtmlDocument type.
+            </summary>
+            <param name="doc">a HTML Document needs to parse.</param>
+        </member>
+        <member name="M:fox.spider.IDocumentParser.parse(mshtml.IHTMLDocument2)">
+            <summary>
+            analyze HTML Document in mshtml.IHTMLDocument2 type. This is more preferrable.
+            </summary>
+            <param name="doc">a HTML Document needs to parse.</param>
+        </member>
+        <member name="M:fox.spider.IDocumentParser.setRelationProcessor(fox.spider.IRelationProcessor)">
+            <summary>
+            set the relation processor which is used to process relationships between tables.
+            </summary>
+            <param name="relation">Relation Processor</param>
+        </member>
+        <member name="M:fox.spider.IDocumentParser.getRelationProcessor">
+            <summary>
+            get the relation processor.
+            </summary>
+            <returns>the relation processor used by IDocumentParser currently.</returns>
+        </member>
+        <member name="M:fox.spider.IDocumentParser.setDataTable(System.Data.DataTable)">
+            <summary>
+            set data table used by IDocumentParser. While a data element is parsed, IDocumentParser
+            creates a data row of this data table.
+            </summary>
+            <param name="table">Table</param>
+        </member>
+        <member name="M:fox.spider.IDocumentParser.getDataTable">
+            <summary>
+            get the data table used by IDocumentParser.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:fox.spider.IDocumentParser.RowParsed">
+            <summary>
+            While a data element is parsed, IDocumentParser dispatches this event.
+            </summary>
+        </member>
+        <member name="T:fox.spider.ForeignKeyRelationProcessor">
+            <summary>
+            ForeignKeyRelationProcessor uses DataRelation to know the relationships between parent and child table.
+            While binding, it copies data from primary key field to foreign key field.
+            </summary>
+        </member>
+        <member name="T:fox.spider.RelationProcessor">
+            <summary>
+            RelationProcessor is an abstract implementation of IRelationProcessor. RelationProcessor
+            implements many of interfaces of IRelationProcessor. It publishes an abstract method named
+            bind for its descendents.
+            </summary>
+        </member>
+        <member name="T:fox.spider.IRelationProcessor">
+            <summary>
+            IRelationProcessor analyzes parent or child data row and IHTMLDOMNode to configure 
+            data relationship between these two data row. Such as a foreign key processor  
+            maintains the foreign key relationship between two data row.
+            <br/>
+            IRelationProcessor may change some field in parent or child data row.
+            </summary>
+        </member>
+        <member name="M:fox.spider.IRelationProcessor.bindRelation(mshtml.IHTMLDOMNode,System.Data.DataRow)">
+            <summary>
+            binds the relationships between parent and child.
+            </summary>
+            <param name="childNode">a IHTMLDOMNode which is parsed by IDocumentParser.</param>
+            <param name="childRow">a DataRow which contains data parsed by IElementRowContentParser.</param>
+        </member>
+        <member name="M:fox.spider.IRelationProcessor.setContextRow(System.Data.DataRow)">
+            <summary>
+            sets the parent data row.
+            </summary>
+            <param name="parent"></param>
+        </member>
+        <member name="M:fox.spider.IRelationProcessor.getContextRow">
+            <summary>
+            gets the parent data row.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.IRelationProcessor.setContextNode(mshtml.IHTMLDOMNode)">
+            <summary>
+            sets the parent IHTMLDOMNode.
+            </summary>
+            <param name="parentNode"></param>
+        </member>
+        <member name="M:fox.spider.IRelationProcessor.getContextNode">
+            <summary>
+            gets the parent IHTMLDOMNode.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.bind(mshtml.IHTMLDOMNode,System.Data.DataRow)">
+            <summary>
+            links parent node and parent row with child node and child row
+            </summary>
+            <param name="node"></param>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.next">
+            <summary>
+            returns next IRelationProcessor
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.setNext(fox.spider.IChain)">
+            <summary>
+            sets next IRelationProcessor
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.bindRelation(mshtml.IHTMLDOMNode,System.Data.DataRow)">
+            <summary>
+            
+            </summary>
+            <param name="childNode"></param>
+            <param name="childRow"></param>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.setContextRow(System.Data.DataRow)">
+            <summary>
+            
+            </summary>
+            <param name="parent"></param>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.getContextRow">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.setContextNode(mshtml.IHTMLDOMNode)">
+            <summary>
+            
+            </summary>
+            <param name="parentNode"></param>
+        </member>
+        <member name="M:fox.spider.RelationProcessor.getContextNode">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.ForeignKeyRelationProcessor.bind(mshtml.IHTMLDOMNode,System.Data.DataRow)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="row"></param>
+        </member>
+        <member name="P:fox.spider.ForeignKeyRelationProcessor.DataRelation">
+            <summary>
+            DataRelation used to tell ForeignKeyRelationProcessor the relationships between parent row and child row.
+            </summary>
+        </member>
+        <member name="T:fox.spider.DocumentParser">
+            <summary>
+            DocumentParser is an abstract implementation of IDocumentParser. All document parser 
+            should extend from this class. DocumentParser implements all IDocumentParser's interfaces, and 
+            propose two abstract methods, parseContent, for its decendents. These two different parseContent
+            methods are to parse content in HtmlDocument type which is a class in System.Windows.Forms and to 
+            parse content in IHTMLDocument2 type which is a interface in mshtml. 
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.DocumentParser.parseContent(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            parse Html Document in HtmlDocument type.
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.DocumentParser.parseContent(mshtml.IHTMLDocument2)">
+            <summary>
+            parse Html Document in IHTMLDocument2 type
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.DocumentParser.fireRowParsedEvent(System.Data.DataRow)">
+            <summary>
+            fire RowParsed event
+            </summary>
+            <param name="row">parsed data row </param>
+            <returns>the return value of event handlers</returns>
+        </member>
+        <member name="M:fox.spider.DocumentParser.parse(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            parse content.
+            the default implementation of parse content. DocumentParser will call parseContent method. 
+            After that, it will check if it has next document parser or not. If it has next document 
+            parser, calls parse method of next document parser.
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.DocumentParser.parse(mshtml.IHTMLDocument2)">
+            <summary>
+            parse content.
+            the default implementation of parse content. DocumentParser will call parseContent method. 
+            After that, it will check if it has next document parser or not. If it has next document 
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.DocumentParser.setDataTable(System.Data.DataTable)">
+            <summary>
+            set the data table associated with this document parser.
+            </summary>
+            <param name="table"></param>
+        </member>
+        <member name="M:fox.spider.DocumentParser.getDataTable">
+            <summary>
+            get the data table associated with this document parser.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParser.setRelationProcessor(fox.spider.IRelationProcessor)">
+            <summary>
+            set the relation processor associated with this document parser.
+            </summary>
+            <param name="relation"></param>
+        </member>
+        <member name="M:fox.spider.DocumentParser.getRelationProcessor">
+            <summary>
+            get the data table associated with this document parser.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParser.next">
+            <summary>
+            get next document parser.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParser.setNext(fox.spider.IChain)">
+            <summary>
+            set next document parser. This method only accepts instances of IDocumentParser type as its argument.
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="E:fox.spider.DocumentParser.RowParsed">
+            <summary>
+            RowParsed event is fired when a document parser has parsed a data row.
+            </summary>
+        </member>
+        <member name="T:fox.spider.BasicSpiderForm">
+            <summary>
+            a convenient form for Spider users.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BasicSpiderForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.LockBrowserIn(System.String)">
+            <summary>
+            lock the browser navigation in the baseUrl.
+            </summary>
+            <param name="baseUrl"></param>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.NavigateUrl(System.String)">
+            <summary>
+            navigate url.
+            </summary>
+            <param name="url"></param>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.logErrorText(System.String)">
+            <summary>
+            log message to errlog.txt.
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:fox.spider.BasicSpiderForm.logText(System.String,System.Windows.Forms.ToolStripStatusLabel)">
+             <summary>
+            log text to console and ToolStripStatusLabel.
+             </summary>
+             <param name="s"></param>
+             <param name="ss">若 ss 為 null ，則不顯示</param>
+        </member>
+        <member name="P:fox.spider.BasicSpiderForm.Browser">
+            <summary>
+            Web Browser
+            </summary>
+        </member>
+        <member name="T:fox.spider.TableExtractor">
+            <summary>
+            TableExtractor parses each row of a html table to a data row of a data table.
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.TableExtractor.parseRow(mshtml.IHTMLTableRow)">
+            <summary>
+            parse a data row
+            </summary>
+            <param name="row">TR</param>
+        </member>
+        <member name="M:fox.spider.TableExtractor.getTable(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            get the html table from htmldocument.
+            </summary>
+            <param name="doc"></param>
+            <returns>Table 或是 null</returns>
+        </member>
+        <member name="M:fox.spider.TableExtractor.parseContent(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            parse content
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.TableExtractor.parseContent(mshtml.IHTMLDocument2)">
+            <summary>
+            parse content
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.TableExtractor.processTable(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse table. if table argument is not a IHTMLTable, this method will not parse anthing.
+            </summary>
+            <param name="table"></param>
+        </member>
+        <member name="P:fox.spider.TableExtractor.RowContentParser">
+            <summary>
+            a IElementRowContentParser will be used in parsing data row.
+            </summary>
+        </member>
+        <member name="P:fox.spider.TableExtractor.StartRowIndex">
+            <summary>
+            a index of the first row which need to parse as a data row in html table. The default value of this property is 0.
+            </summary>
+        </member>
+        <member name="P:fox.spider.TableExtractor.EndRowIndex">
+            <summary>
+            a index of the last row which need to parse as a data row in html table. The default value of this property is int.MaxValue.
+            </summary>
+        </member>
+        <member name="P:fox.spider.TableExtractor.TablePath">
+            <summary>
+            a absolute spider path pointing to html table.
+            </summary>
+        </member>
+        <member name="T:fox.spider.ElementFilter">
+            <summary>
+            a filter used by searchChildElementByContent
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fox.spider.SpiderUtilities">
+            <summary>
+            Spider Utilities
+            </summary>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.searchChildElementByContent(System.String,mshtml.IHTMLElement,fox.spider.ElementFilter)">
+            <summary>
+            search a child node by its content. This method will search all decendents of elem to find a node whose
+            content is txt. The filter may be used to filter the node with the same content which is not we want.
+            </summary>
+            <param name="txt">text</param>
+            <param name="elem">searching root</param>
+            <param name="filter">node filter</param>
+            <returns>a node with txt as its content, or null while not found.</returns>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.createAttributeRowContentParser(System.String,System.String,System.String)">
+            <summary>
+            </summary>
+            <param name="path"></param>
+            <param name="attr"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.createXPathRowContentParser(System.String[],System.String[],System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="path"></param>
+            <param name="col"></param>
+            <param name="trim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.createXPathRowContentParser(System.String[],System.Int32[],System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="path"></param>
+            <param name="col"></param>
+            <param name="trim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.turnOffJavascriptErrorAndPopup(AxSHDocVw.AxWebBrowser)">
+            <summary>
+            turn off all javascript error and popup.
+            </summary>
+            <param name="browser"></param>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.browser_NavigateComplete2(System.Object,AxSHDocVw.DWebBrowserEvents2_NavigateComplete2Event)">
+            <summary>
+            mute browser
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.navigateUrlWithoutCache(AxSHDocVw.AxWebBrowser,System.String)">
+            <summary>
+            navigate a browser with navNoReadFromCache, navNoHistory, and navNoWriteToCache arguments.
+            </summary> 
+            <param name="browser"></param>
+            <param name="url"></param>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.queryHTMLNode(System.Windows.Forms.HtmlDocument,System.Collections.Generic.List{System.String})">
+            <summary>
+            evaluates a list of path sequentially and returns resul
+            </summary>
+            <param name="doc"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.queryHTMLNode(mshtml.IHTMLDocument2,System.Collections.Generic.List{System.String})">
+            <summary>
+            evaluates a list of path sequentially and returns resul
+            </summary>
+            <param name="doc"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderUtilities.queryHTMLNode(mshtml.IHTMLDOMNode,System.Collections.Generic.List{System.String})">
+            <summary>
+            evaluates a list of path sequentially and returns result.
+            </summary>
+            <param name="n"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fox.spider.RowContentParserUtilities">
+            <summary>
+            RowContentParser Utilities 
+            </summary>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createAttributeRowContentParser(System.String,System.String,System.String)">
+             <summary>
+            convenient function to create a AttributeRowContentParser
+             </summary>
+             <param name="path"></param>
+             <param name="attr"></param>
+             <param name="col"></param>
+             <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createAttributeRowContentParser(System.String,System.String,System.Int32)">
+            <summary>
+            convenient function to create a AttributeRowContentParser
+            </summary>
+            <param name="path"></param>
+            <param name="attr"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createXPathRowContentParser(System.String[],System.String[],System.Boolean)">
+            <summary>
+            convenient function to create a XPathRowContentParser
+            </summary>
+            <param name="path"></param>
+            <param name="col"></param>
+            <param name="trim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createXPathRowContentParser(System.String[],System.Int32[],System.Boolean)">
+            <summary>
+            convenient function to create a XPathRowContentParser
+            </summary>
+            <param name="path"></param>
+            <param name="col"></param>
+            <param name="trim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createStringRowContentParser(System.String,System.String[],System.String[])">
+            <summary>
+            convenient function to create a StringRowContentParser
+            </summary>
+            <param name="regex"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createStringRowContentParser(System.String,System.String[],System.Int32[])">
+            <summary>
+            convenient function to create a StringRowContentParser
+            </summary>
+            <param name="regex"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createStringRowContentParser(System.String,System.String[],System.String[],System.Boolean)">
+            <summary>
+            convenient function to create a StringRowContentParser
+            </summary>
+            <param name="regex"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createStringRowContentParser(System.String,System.String[],System.Int32[],System.Boolean)">
+            <summary>
+            convenient function to create a StringRowContentParser
+            </summary>
+            <param name="regex"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createPriorityRowContentParser(System.String[],System.String)">
+            <summary>
+            convenient function to create a PriorityRowContentParser
+            </summary>
+            <param name="xpath"></param>
+            <param name="target"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createPriorityRowContentParser(System.String[],System.Int32)">
+            <summary>
+            convenient function to create a PriorityRowContentParser
+            </summary>
+            <param name="xpath"></param>
+            <param name="target"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.RowContentParserUtilities.createConstantRowContentParser(System.String,fox.spider.ConstantsRowContentParser.ConstantsType,System.Object)">
+            <summary>
+            convenient function to create a ConstantsRowContentParser
+            </summary>
+            <param name="field"></param>
+            <param name="type"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fox.spider.SpiderPath">
+            <summary>
+            Spider Path Utilities
+            </summary>
+        </member>
+        <member name="M:fox.spider.SpiderPath.selectSingleNode(mshtml.IHTMLDOMNode,System.String)">
+            <summary>
+            convenient function to SPath.selectSingleNode
+            </summary>
+            <param name="n"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderPath.selectSingleNode(mshtml.IHTMLDocument2,System.String)">
+            <summary>
+            convenient function to SPath.selectSingleNode
+            </summary>
+            <param name="n"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderPath.selectSingleNode(System.Windows.Forms.HtmlDocument,System.String)">
+            <summary>
+            convenient function to SPath.selectSingleNode
+            </summary>
+            <param name="n"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderPath.selectSingleAttribute(mshtml.IHTMLDOMNode,System.String)">
+            <summary>
+            convenient function to SPath.selectSingleNode
+            </summary>
+            <param name="n"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderPath.selectSingleAttribute(mshtml.IHTMLDocument2,System.String)">
+            <summary>
+            convenient function to SPath.selectSingleNode
+            </summary>
+            <param name="n"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.SpiderPath.selectSingleAttribute(System.Windows.Forms.HtmlDocument,System.String)">
+            <summary>
+            convenient function to SPath.selectSingleNode
+            </summary>
+            <param name="n"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fox.spider.ElementRowContentParser">
+            <summary>
+            ElementRowContentParser is an abstract implementation of IElementRowCOntentParser. 
+            It implements all interfaces of IElementRowContentParser and propose a parseContent 
+            method for its decendents. It is strongly encouraged to extend this class while you 
+            want to create a new row content parser.
+            </summary>
+        </member>
+        <member name="T:fox.spider.IElementRowContentParser">
+            <summary>
+            IElementRowContentParser is responsible for analyzing IHTMLDOMNode 
+            to retrieve data for each data field.
+            <br/>
+            IDocumentParser is responsible for finding out a data row from HTML Document, 
+            and IElementRowContentParser is responsible for finding data field from IHTMLDOMNode 
+            </summary>
+        </member>
+        <member name="M:fox.spider.IElementRowContentParser.parse(mshtml.IHTMLDOMNode)">
+            <summary>
+            parses a IHTMLDOMNode to find data out and stores in the current data row.
+            </summary>
+            <param name="elem"></param>
+        </member>
+        <member name="M:fox.spider.IElementRowContentParser.setDataRow(System.Data.DataRow)">
+            <summary>
+            sets the data row which stores parsed data.
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.IElementRowContentParser.getDataRow">
+            <summary>
+            get the data row which stores parsed data.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            analyze IHTMLDOMNode and fill some columns in data row. 
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.parse(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse html node. If it has next row content parser, this method will pass data row, obtained by 
+            previous row content parser or document parser, to next row content parser and call parse method
+            of next row content parser.
+            </summary>
+            <param name="elem"></param>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.setDataRow(System.Data.DataRow)">
+            <summary>
+            set data row
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.getDataRow">
+            <summary>
+            get data row
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.setFieldValue(System.Object,System.Object)">
+            <summary>
+            a convenient method for setting value of a data column.
+            </summary>
+            <param name="f">f may be a integer or a string. If f is a integer, f is used as an index. If f is 
+            a string, f is used as a column name</param>
+            <param name="v"></param>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.next">
+            <summary>
+            get next row content parser.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.ElementRowContentParser.setNext(fox.spider.IChain)">
+            <summary>
+            set next row content parser.
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="P:fox.spider.ElementRowContentParser.ColumnMapping">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:fox.spider.LinkedWebPageTurner">
+            <summary>
+            LinkedWebPageTurner uses a path to find a node. If it finds, it will click it. 
+            
+            <code>
+                   LinkedWebPageTurner oTurner = new LinkedWebPageTurner();
+                   oTurner.setPagingInfo("/BODY/DIV[0]/A[1]");
+            </code>
+            </summary>
+        </member>
+        <member name="T:fox.spider.IWebPageTurner">
+            <summary>
+            IWebPageTurner is responsible for turing to next page.
+            </summary>
+        </member>
+        <member name="M:fox.spider.IWebPageTurner.nextPage(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            turn to next page.
+            </summary>
+            <param name="doc">Html Document</param>
+            <returns>returns true, if it turns correctly. </returns>
+        </member>
+        <member name="M:fox.spider.IWebPageTurner.nextPage(mshtml.IHTMLDocument2)">
+            <summary>
+            turn to next page.
+            </summary>
+            <param name="doc">Html Document</param>
+            <returns>returns true, if it turns correctly. </returns>
+        </member>
+        <member name="M:fox.spider.IWebPageTurner.setPagingInfo(System.Object)">
+            <summary>
+            sets the paging info used by IWebPageTurner.
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:fox.spider.IWebPageTurner.getPagingInfo">
+            <summary>
+            gets the paging info used by IWebPageTurner.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:fox.spider.IWebPageTurner.PageNotFound">
+            <summary>
+            IWebPageTurner dispatches this event while it can't turn page.
+            </summary>
+        </member>
+        <member name="M:fox.spider.LinkedWebPageTurner.nextPage(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            turn to next page
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.LinkedWebPageTurner.nextPage(mshtml.IHTMLDocument2)">
+            <summary>
+            turn to next page
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.LinkedWebPageTurner.setPagingInfo(System.Object)">
+            <summary>
+            Paging Info must be a spider path.
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:fox.spider.LinkedWebPageTurner.getPagingInfo">
+            <summary>
+            it is a string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:fox.spider.LinkedWebPageTurner.PageNotFound">
+            <summary>
+            dispatches when page not found
+            </summary>
+        </member>
+        <member name="T:fox.spider.WebPageTurnerUnpagedEvent">
+            <summary>
+            IWebPageTurner dispatches an event named PagerNotFound with this type while
+            IWebPageTurner can't turn page currently.
+            </summary>
+            <param name="sender">an object who sends this event.</param>
+            <param name="pagingInfo">the pagingInfo used by IWebPageTurner.</param>
+        </member>
+        <member name="T:fox.spider.HTMLUtilities">
+            <summary>
+            HTML Utilities.
+            </summary>
+        </member>
+        <member name="M:fox.spider.HTMLUtilities.getNodeValue(mshtml.IHTMLDOMNode)">
+            <summary>
+            convenient function to get the content of a node. If n is an element, returns innerText. Otherwise, returns nodeValue.
+            </summary>
+            <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fox.spider.DocumentParserUtilities">
+            <summary>
+            DocumentParser Utilities
+            </summary>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createCellBasedDocumentParser(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String[],System.String[],System.String[],System.String[])">
+            <summary>
+            convenient function to create a CellBasedDocumentParser
+            </summary>
+            <param name="row">row content parser</param>
+            <param name="table">data table</param>
+            <param name="rel">relation processor, this may be null</param>
+            <param name="rowFirst">first row path which will be added sequentially.</param>
+            <param name="rowNext">next row path which will be added sequentially.</param>
+            <param name="cellFirst">first cell path which will be added sequentially.</param>
+            <param name="cellNext">next cell path which will be added sequentially.</param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createCellBasedDocumentParser(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String,System.String,System.String,System.String)">
+            <summary>
+            convenient function to create a CellBasedDocumentParser
+            </summary>
+            <param name="row"></param>
+            <param name="table"></param>
+            <param name="rel"></param>
+            <param name="rowFirst"></param>
+            <param name="rowNext"></param>
+            <param name="cellFirst"></param>
+            <param name="cellNext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createRepeaterContentParser(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String[],System.String[])">
+            <summary>
+            convenient function to create a RepeaterContentParser
+            </summary>
+            <param name="row"></param>
+            <param name="table"></param>
+            <param name="rel"></param>
+            <param name="first"></param>
+            <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createRepeaterContentParser(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String,System.String)">
+            <summary>
+            convenient function to create a RepeaterContentParser
+            </summary>
+            <param name="row"></param>
+            <param name="table"></param>
+            <param name="rel"></param>
+            <param name="first"></param>
+            <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createTableExtractor(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String,System.Int32,System.Int32)">
+            <summary>
+            convenient function to create a TableExtractor
+            </summary>
+            <param name="row"></param>
+            <param name="table"></param>
+            <param name="rel"></param>
+            <param name="tablePath"></param>
+            <param name="start"></param>
+            <param name="end"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createTableExtractor(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String,System.Int32)">
+            <summary>
+            convenient function to create a TableExtractor, the end will be int.MaxValue
+            </summary>
+            <param name="row"></param>
+            <param name="table"></param>
+            <param name="rel"></param>
+            <param name="tablePath"></param>
+            <param name="start"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.DocumentParserUtilities.createTableExtractor(fox.spider.IElementRowContentParser,System.Data.DataTable,fox.spider.IRelationProcessor,System.String)">
+            <summary>
+            convenient function to create a TableExtractor, the start will be 0 and the end will be int.MaxValue
+            </summary>
+            <param name="row"></param>
+            <param name="table"></param>
+            <param name="rel"></param>
+            <param name="tablePath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fox.spider.RepeaterContentParser">
+            <summary>
+            RepeaterContentParser is similar to CellBasedDocumentParser. It analyzes data in 
+            repeated pattern. Some web pages render data in a sequential repeated block which
+            may be a div or a li or table. RepeaterContentParser is used to analyze this kind 
+            of html. 
+            
+            RepeaterContentParser uses first item path to find out the first item and parse it 
+            as a data row. After first item, it uses next item path which is a relative path to
+            find the other items and parses them as data rows.
+            </summary>
+        </member>
+        <member name="M:fox.spider.RepeaterContentParser.addFirstItemPath(System.String)">
+            <summary>
+            add first item path, it should be absolute path and will be used in searching first item.
+            The sequence of first item path depends on the sequence of method calls. The first added item will be evaluated
+            at first. These first item path will be evaluated sequentially until the first item is found.
+            </summary>
+            <param name="first"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterContentParser.addNextItemPath(System.String)">
+            <summary>
+            add next item path, it should be relative path and will be used in searching next item.
+            The sequence of next item path depends on the sequence of method calls. The first added item will be evaluated
+            at first. These next item path will be evaluated sequentially until the next item is found.
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterContentParser.removeFirstItemPath(System.String)">
+            <summary>
+            remove first item path
+            </summary>
+            <param name="first"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterContentParser.removeNextItemPath(System.String)">
+            <summary>
+            remove next item path;
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterContentParser.parseContent(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            calls parseContent((mshtml.IHTMLDocument2) doc.DomDocument)
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterContentParser.parseContent(mshtml.IHTMLDocument2)">
+            <summary>
+            parse content.
+            
+            RepeaterContentParser uses first item path to find first html node and parse this node as a
+            data row. After first item, RepeaterContentParser uses next item path to find other nodes and
+            prase them as data rows.
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="P:fox.spider.RepeaterContentParser.NextItemPath2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:fox.spider.RepeaterContentParser.FirstItemPath2">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:fox.spider.RepeaterContentParser.RowContentParser">
+            <summary>
+            a IElementRowContentParser is used to parse data row.
+            </summary>
+        </member>
+        <member name="P:fox.spider.RepeaterContentParser.FirstItemPath">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:fox.spider.RepeaterContentParser.NextItemPath">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:fox.spider.PriorityRowContentParser">
+            <summary>
+            PriorityRowContentParser has ability to evaluate a list of Spider Path sequentially.
+            But it only save the first result returned from the list to data row.
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.PriorityRowContentParser.XPATH_LIST">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.PriorityRowContentParser.TARGET">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:fox.spider.PriorityRowContentParser.addXPath(System.String)">
+            <summary>
+            add a spider path to the list. the sequence of addition will be the sequence of evaluation
+            </summary>
+            <param name="xpath"></param>
+        </member>
+        <member name="M:fox.spider.PriorityRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:fox.spider.PriorityRowContentParser.ColumnName">
+            <summary>
+            the data column name
+            </summary>
+        </member>
+        <member name="P:fox.spider.PriorityRowContentParser.ColumnPosition">
+            <summary>
+            the data column index
+            </summary>
+        </member>
+        <member name="T:fox.spider.NamedWebPageTurner">
+            <summary>
+            NamedWebPageTurner will click an element with the specified content. 
+            </summary>
+        </member>
+        <member name="M:fox.spider.NamedWebPageTurner.nextPage(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            nextPage
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.NamedWebPageTurner.nextPage(mshtml.IHTMLDocument2)">
+            <summary>
+            nextPage
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fox.spider.NamedWebPageTurner.setPagingInfo(System.Object)">
+            <summary>
+            it is an instance of NamedWebPagingInfo
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:fox.spider.NamedWebPageTurner.getPagingInfo">
+            <summary>
+            it is an instance of NamedWebPagingInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:fox.spider.NamedWebPageTurner.PageNotFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:fox.spider.NamedWebPagingInfo">
+            <summary>
+            the info stores starting path and the content of a elment which will be clicked.
+            </summary>
+        </member>
+        <member name="P:fox.spider.NamedWebPagingInfo.StartPath">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:fox.spider.NamedWebPagingInfo.PagerName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:fox.spider.ConstantsRowContentParser">
+            <summary>
+            ConstantsRowContentParser fills data column with constant value.
+            </summary>
+        </member>
+        <member name="M:fox.spider.ConstantsRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            fill constant value in data column
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:fox.spider.ConstantsRowContentParser.DefaultValue">
+            <summary>
+            the constant value
+            </summary>
+        </member>
+        <member name="P:fox.spider.ConstantsRowContentParser.Field">
+            <summary>
+            the column name or index
+            </summary>
+        </member>
+        <member name="P:fox.spider.ConstantsRowContentParser.Type">
+            <summary>
+            type of constant. If you specify empty as Type property , it will fill 
+            default value to data column. If yo specify URL as type property, it will
+            fill the url from whom downloaded this html document.
+            </summary>
+        </member>
+        <member name="T:fox.spider.ConstantsRowContentParser.ConstantsType">
+            <summary>
+            ConstantsType has two value, Empty, and URL. 
+            </summary>
+        </member>
+        <member name="T:fox.spider.DocumentCompleted">
+            <summary>
+            
+            </summary>
+            <param name="browser"></param>
+            <param name="url"></param>
+        </member>
+        <member name="M:fox.spider.WebBrowserForm.setLabelText(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="str"></param>
+        </member>
+        <member name="F:fox.spider.WebBrowserForm.components">
+            <summary>
+            設計工具所需的變數。
+            </summary>
+        </member>
+        <member name="M:fox.spider.WebBrowserForm.Dispose(System.Boolean)">
+            <summary>
+            清除任何使用中的資源。
+            </summary>
+            <param name="disposing">如果應該公開 Managed 資源則為 true，否則為 false。</param>
+        </member>
+        <member name="M:fox.spider.WebBrowserForm.InitializeComponent">
+             <summary>
+             此為設計工具支援所需的方法 - 請勿使用程式碼編輯器修改這個方法的內容。
+            
+             </summary>
+        </member>
+        <member name="P:fox.spider.WebBrowserForm.Browser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:fox.spider.WebBrowserForm.DocComing">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:fox.spider.RepeaterRowContentParser">
+            <summary>
+            RepeaterRowContentParser uses repeated pattern to fill data row. Like RepeaterContentParser, 
+            it also has first item path and next item path. RepeaterRowContentParser evaluates first item
+            path to find the first item and use next item path to find the other items. 
+            <br/>
+            Besides item path, 
+            RepeaterRowContentParser proposes a special matching mechanism to determine which content needs
+            to be saved to where.You may provide arguments to RepeaterRowContentParser by addParsingInfo. 
+            RepeaterRowContentParser will use match path, another spider path, and match regexp,  to 
+            check if specified node exists and the node content also matched with regexp. If yes, 
+            RepeaterRowContentParser will use value path, a spider path, and value filter, a regexp, to 
+            retrieve the content which will be saved in data row. 
+            
+            <br/>
+             This is very useful RowContentParser when you meet the data who will be stored in a data row 
+            spread in many nodes. 
+            </summary>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.addFirstItemPath(System.String)">
+            <summary>
+            add a first item path.
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.addNextItemPath(System.String)">
+            <summary>
+            add a next item path
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.removeFirstItemPath(System.String)">
+            <summary>
+            remove the first item path
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.removeNextItemPath(System.String)">
+            <summary>
+            remove the next item path
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.addParsingInfo(System.Object,System.String,System.String)">
+            <summary>
+            add parsing info. If matcherPath points to an existing node, the value of the node pointed by valuePath 
+            will be stored in field column.
+            </summary>
+            <param name="field">a data column name or index of data row</param>
+            <param name="matcherPath">a spider path used to check if matcher exists.</param>
+            <param name="valuePath">a spider path used to find the value node</param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.addParsingInfo(System.Object,System.String,System.Text.RegularExpressions.Regex,System.String)">
+            <summary>
+            add parsing info. If matcherPath points to an existing node and the content, innerText or nodeValue, 
+            of this node matches to macher, the value of the node pointed by valuePath will be stored in field column.
+            </summary>
+            <param name="field">a data column name or index of data row</param>
+            <param name="matcherPath">a spider path used to check if matcher exists.</param>
+            <param name="matcher">a regular expression used to check if the node pointed by matcherPath is we want</param>
+            <param name="valuePath">a spider path used to find the value node</param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.addParsingInfo(System.Object,System.String,System.Text.RegularExpressions.Regex,System.String,System.Text.RegularExpressions.Regex)">
+            <summary>
+            add parsing info. If matcherPath points to an existing node and the content, innerText or nodeValue, 
+            of this node matches to macher, the value, which will be filtered by valueFilter and only the first 
+            match group will be used, of the node pointed by valuePath will be stored in field column.
+            </summary>
+            <param name="field">a data column name or index of data row</param>
+            <param name="matcherPath">a spider path used to check if matcher exists.</param>
+            <param name="matcher">a regular expression used to check if the node pointed by matcherPath is we want</param>
+            <param name="valuePath">a spider path used to find the value node</param>
+            <param name="valueFilter">a regluar expression used to filter the value</param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.parseItem(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse a node with parsing info.
+            </summary>
+            <param name="n"></param>
+        </member>
+        <member name="M:fox.spider.RepeaterRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse content with first item path and next item path.
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="T:fox.spider.StringRowContentParser">
+             <summary>
+             StringRowContentParser is a kind of regular expression row content parser. It uses
+             a lot of regular expression to retrieve value and store to data column.
+             
+             example: 
+             <code>
+            StringRowContentParser oRegex = new StringRowContentParser();
+            oRegex.MatchHTML=false;
+            oRegex.NodePath="TD[0]"
+            oRegex.addMapping(@"(\d+)", "RefCount");
+             </code>
+             The above code will save (\d+) to RefCount field.
+             </summary>
+        </member>
+        <member name="F:fox.spider.StringRowContentParser.TDPATH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.StringRowContentParser.addMapping(System.String,System.String)">
+            <summary>
+            add a regular expression and column name mapping.
+            </summary>
+            <param name="regex"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:fox.spider.StringRowContentParser.addMapping(System.String,System.Int32)">
+            <summary>
+            add a regular expression and column index mapping.
+            </summary>
+            <param name="regex"></param>
+            <param name="index"></param>
+        </member>
+        <member name="M:fox.spider.StringRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse content.
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="P:fox.spider.StringRowContentParser.MatchHTML">
+            <summary>
+            if true, StringRowContentParser will match innerHtml instead of innerText or nodeValue.
+            </summary>
+        </member>
+        <member name="P:fox.spider.StringRowContentParser.NodePath">
+            <summary>
+            a spider path pointing to the node whose content needs to be saved.
+            </summary>
+        </member>
+        <member name="T:fox.spider.AttributeRowContentParser">
+            <summary>
+            AttributeRowContentParser retrieves the value of a attribute of a html dom node and stores it 
+            in data column.
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.AttributeRowContentParser.ATTRIBUTE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.AttributeRowContentParser.COLUMN">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.AttributeRowContentParser.NODEPATH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.AttributeRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            get the attribute which is named AttribtueName from the html node which is obtained by NodePath, and 
+            store in ColumnName/ColumnPosition column of data row.
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:fox.spider.AttributeRowContentParser.AttributeName">
+            <summary>
+            the attribute name.
+            </summary>
+        </member>
+        <member name="P:fox.spider.AttributeRowContentParser.ColumnName">
+            <summary>
+            the column of the data row
+            </summary>
+        </member>
+        <member name="P:fox.spider.AttributeRowContentParser.ColumnPosition">
+            <summary>
+            the column index of the data row
+            </summary>
+        </member>
+        <member name="P:fox.spider.AttributeRowContentParser.NodePath">
+            <summary>
+            the spider path indicating the html dom node.
+            </summary>
+        </member>
+        <member name="T:fox.spider.LinkedRowContentParser">
+             <summary>
+             過度複雜的結構，建議盡量少使用它
+             範例程式：
+             <code>
+            Hashtable oMapping2 = new Hashtable();
+            oMapping2.Add(LinkedRowContentParser.LINKPATH, "TD[3]/A[0]");
+            oMapping2.Add(LinkedRowContentParser.TARGETPATH, "/BODY/CENTER[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/CENTER[0]/TABLE[0]/TBODY[0]/TR[3]/TD[0]");
+            oMapping2.Add(LinkedRowContentParser.FIELD, "內文");    
+             
+            LinkedRowContentParser oContentParser = new LinkedRowContentParser();
+            oContentParser.ColumnMapping = oMapping2;
+            oContentParser.RandomSpanEnabled = true;
+            oRowParser.setNext(oContentParser);
+             </code>
+             以上的程式會從 TD[3]/A[0] 的位置中找到 url 的路徑，然後開啟一個 WebBrowserForm 連結該網址。
+             當有資料回傳的時候，它會使用 /BODY/CENTER[0]/TABLE[0]... 來找到 node ，並將這個 node 的 innerText
+             儲存在『內文』當中。
+             
+             這個程式還有另一個參數，ColumnMapping2，它將會儲存一堆 LinkedRowContentParserParam 物件，並用它來將某個
+             資料儲存在 DataRow 當中。這個的功能會跟 ColumnMapping 的功能一樣，但 ColumnMapping 只能將資料儲存到一個
+             欄位之中；ColumnMapping2 會將多個資料儲存到多個欄位之中。
+             
+             LinkedRowContentParser 因為會開另一個 Browser ，所以可以有另一個 Document Parser 負責 parse 開啟後
+             的 web browser 。
+             </summary>
+        </member>
+        <member name="F:fox.spider.LinkedRowContentParser.LINKPATH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.LinkedRowContentParser.TARGETPATH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.LinkedRowContentParser.TARGETPATHS">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.LinkedRowContentParser.FIELD">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.LinkedRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.LinkedRowContentParser.fetchSinglePath(mshtml.IHTMLDocument2)">
+            <summary>
+            
+            </summary>
+            <param name="document"></param>
+        </member>
+        <member name="M:fox.spider.LinkedRowContentParser.fetchMultiplePath(mshtml.IHTMLDocument2)">
+            <summary>
+            
+            </summary>
+            <param name="document"></param>
+        </member>
+        <member name="M:fox.spider.LinkedRowContentParser.fetchItem(mshtml.IHTMLDocument2,System.Collections.ArrayList,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="document"></param>
+            <param name="path"></param>
+            <param name="field"></param>
+        </member>
+        <member name="M:fox.spider.LinkedRowContentParser.fetchOthers(mshtml.IHTMLDocument2)">
+            <summary>
+            
+            </summary>
+            <param name="document"></param>
+        </member>
+        <member name="P:fox.spider.LinkedRowContentParser.ColumnMapping2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:fox.spider.LinkedRowContentParser.ChildDocumentParser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:fox.spider.LinkedRowContentParser.RandomSpanEnabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.LinkedRowContentParserParam.Path">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:fox.spider.LinkedRowContentParserParam.Field">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:fox.spider.CellBasedDocumentParser">
+            <summary>
+            CellBasedDocumentParser is a similar to RepeaterContentParser. It uses row-based and
+            cell-based repeated pattern to analyze document. Some web pages render a lot of data in a table.
+            They always renders a few data rows in a cell of table. CellBasedDocumentParser is 
+            used to parse this kind of data, and views a cell of table as it data row.
+            
+            CellBasedDocumentParser uses first row path to identify the row of a table. In each row,  
+            CellBasedDocumentParser uses first cell path to identify the cell of a row that will be 
+            parsed as a DataRow. After a cell is parsed, it uses next cell path to find the next cell
+            relative to previous cell. While no cells be found in this row, CellBasedDocumentParser 
+            uses next row path to find the next row relative to previous row and do the same analysis
+            like first row. It will not stop analyzing while next row is not found.
+            </summary>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.addRowFirstPath(System.String)">
+            <summary>
+            add a new first row path, it should be a absolute path and will be used in searching first row of a table.
+            The sequence of first row path depends on the sequence of method calls. The first added item will be evaluated
+            at first. These first row path will be evaluated sequentially until the first row is found.
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.addRowNextPath(System.String)">
+            <summary>
+            add a new next row path, it should be a relative path and will be used in searching next row of a table.
+            The sequence of next row path depends on the sequence of method calls. The first added item will be evaluated
+            at first. These next row path will be evaluated sequentially until the next row is found.
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.addCellFirstPath(System.String)">
+            <summary>
+            add a new first cell path, it should be a relative path and will be used in searching first cell of a row.
+            The sequence of first cell path depends on the sequence of method calls. The first added item will be evaluated
+            at first. These first cell path will be evaluated sequentially until the first cell is found.
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.addCellNextPath(System.String)">
+            <summary>
+            add a new next cell path, it should be a relative path and will be used in searching next cell of a row.
+            The sequence of next cell path depends on the sequence of method calls. The first added item will be evaluated
+            at first. These next cell path will be evaluated sequentially until the next cell is found.
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.removeRowFirstPath(System.String)">
+            <summary>
+            remove first row path
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.removeRowNextPath(System.String)">
+            <summary>
+            remove next row path
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.removeCellFirstPath(System.String)">
+            <summary>
+            remove first cell path
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.removeCellNextPath(System.String)">
+            <summary>
+            remove next cell path
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.parseContent(System.Windows.Forms.HtmlDocument)">
+            <summary>
+            parse cotent, this method calls parseContent((IHTMLDocument2)doc.DomDocument).
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="M:fox.spider.CellBasedDocumentParser.parseContent(mshtml.IHTMLDocument2)">
+            <summary>
+            parse content.
+            </summary>
+            <param name="doc"></param>
+        </member>
+        <member name="P:fox.spider.CellBasedDocumentParser.RowContentParser">
+            <summary>
+            the row content parser will be used in the parse procedure.
+            </summary>
+        </member>
+        <member name="P:fox.spider.CellBasedDocumentParser.RowFirstItem">
+            <summary>
+            a absolute Spider Path which is used to identify the IHTMLDOMNode standing first row.
+            </summary>
+        </member>
+        <member name="P:fox.spider.CellBasedDocumentParser.RowFirstItem2">
+            <summary>
+            a absolute Spider Path which is used to identify the IHTMLDOMNode which stands first row. This path 
+            will be evaluated while the result evaluated from RowFirstItem is null.
+            </summary>
+        </member>
+        <member name="P:fox.spider.CellBasedDocumentParser.RowNextItem">
+            <summary>
+            a relative Spider Path which is used to identify the IHTMLDOMNode which stands next row relative to its previous row.
+            </summary>
+        </member>
+        <member name="P:fox.spider.CellBasedDocumentParser.CellFirstItem">
+            <summary>
+            a relative Spider Path which is used to identify the IHTMLDOMNode which stands first cell relative to its parent row.
+            </summary>
+        </member>
+        <member name="P:fox.spider.CellBasedDocumentParser.CellNextItem">
+            <summary>
+            a relative Spider Path which is used to identify the IHTMLDOMNode which stands next cell relative to its previous cell.
+            </summary>
+        </member>
+        <member name="T:fox.spider.XPathRowContentParser">
+            <summary>
+            XPathRowContentParser is the simplest row content parse. It use spider path to find 
+            nodes and save their innerText or nodeValue to data row.
+            
+            sample code
+            <code>
+            XPathRowContentParser oXPathParser = new XPathRowContentParser();
+            oXPathParser.addMapping("TD[1]/A", "Player");
+            oXPathParser.addMapping("TD[1]/SPAN", "FGMA");
+            </code>
+            
+            </summary>
+        </member>
+        <member name="M:fox.spider.XPathRowContentParser.addMapping(System.String,System.String)">
+            <summary>
+            add mapping info
+            </summary>
+            <param name="xpath"></param>
+            <param name="col"></param>
+        </member>
+        <member name="M:fox.spider.XPathRowContentParser.addMapping(System.String,System.Int32)">
+            <summary>
+            add mapping info
+            </summary>
+            <param name="xpath"></param>
+            <param name="col"></param>
+        </member>
+        <member name="M:fox.spider.XPathRowContentParser.parseContent(mshtml.IHTMLDOMNode)">
+            <summary>
+            parse content
+            </summary>
+            <param name="baseNode"></param>
+        </member>
+        <member name="P:fox.spider.XPathRowContentParser.TrimAllText">
+            <summary>
+            if true, XPathRowContentParser trims text.
+            </summary>
+        </member>
+        <member name="T:fox.spider.BrowserNavConstants">
+            <summary>
+            BrowserNavConstants is contants used in Browser.Navigate.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navOpenInNewWindow">
+            <summary>
+            Open the resource or file in a new window.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navNoHistory">
+            <summary>
+            Do not add the resource or file to the history list. The new page replaces the current page in the list.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navNoReadFromCache">
+            <summary>
+            Not currently supported.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navNoWriteToCache">
+            <summary>
+            Not currently supported.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navAllowAutosearch">
+            <summary>
+            If the navigation fails, the autosearch functionality attempts to navigate common root domains (.com, .edu, and so on). If this also fails, the URL is passed to a search engine.
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navBrowserBar">
+            <summary>
+            Causes the current Explorer Bar to navigate to the given item, if possible. 
+            </summary>
+        </member>
+        <member name="F:fox.spider.BrowserNavConstants.navHyperlink">
+            <summary>
+            If the navigation fails when a hyperlink is being followed, this constant specifies that the resource should then be bound to the moniker using the BINDF_HYPERLINK flag.
+            </summary>
+        </member>
+    </members>
+</doc>

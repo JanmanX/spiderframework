@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Spider xmlns="http://fox.spider.configuration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://fox.spider.configuration
+..\SpiderConf.xsd" id="Yahoo_bid" name="Yahoo Bid">
+	<Table id="ItemList" name="ItemList">
+		<Column type="string" name="url"/>
+	</Table>
+	<Table id="ItemTable" name="ItemTable">
+		<Column type="string" name="Source"/>
+		<Column type="string" name="Category"/>
+		<Column type="string" name="Url"/>
+		<Column type="string" name="ItemId"/>
+		<Column type="string" name="Title"/>
+		<Column type="string" name="ThumbnailUrl"/>	
+		<Column type="string" name="Seller"/>
+		<Column type="string" name="SellerGrade"/>
+		<Column type="string" name="Price"/>
+		<Column type="string" name="NumberOfItems"/>
+		<Column type="string" name="StartingPrice"/>
+		<Column type="string" name="SatisfiedPrice"/>
+		<Column type="string" name="BidCount"/>
+		<Column type="string" name="ItemStatus"/>
+		<Column type="string" name="ItemLocation"/>
+		<Column type="string" name="StartDate"/>
+		<Column type="string" name="EndDate"/>
+		<Column type="string" name="ShippingFee"/>
+		<Column type="string" name="BidInfos"/>
+	</Table>
+	<PageTurners starter="Starter">
+		<LinkedWebPageTurner id="BidListPager" name="" delay="50">
+			<UrlPattern>http://tw.bid.yahoo.com/tw/[0-9]+-category-leaf.html\?.r=[0-9]+.*</UrlPattern>
+			<Path>/BODY/DIV[0]/DIV[0]/DIV[4]/DIV[1]/DIV[0]/DIV[1]/DIV[5]/P/SPAN/A</Path>
+		</LinkedWebPageTurner>
+		<UrlWebPageTurner id="Starter" name="">
+			<url>http://tw.bid.yahoo.com/tw/2092081437-category-leaf.html?.r=1181903300</url>
+			<url>http://tw.bid.yahoo.com/tw/2092081438-category-leaf.html?.r=1181903300</url>
+			<url>http://tw.bid.yahoo.com/tw/2092081439-category-leaf.html?.r=1181903300</url>
+		</UrlWebPageTurner>
+		<DataTableWebPageTurner id="DetailPager" name="" delay="500">
+			<DataTable>ItemList</DataTable>
+			<Field>url</Field>
+		</DataTableWebPageTurner>
+	</PageTurners>
+	<SpiderFlow id="BidListUrlParser" name="BidListUrlParser">
+		<UrlPattern>http://tw.bid.yahoo.com/tw/[0-9]+-category-leaf.html\?.r=[0-9]+.*</UrlPattern>
+		<DocumentParsers>
+			<TableDocumentParser id="BidListTableParser" table="ItemList" name="BidListTableParser">
+				<RowContentParserId>BidUrlParser</RowContentParserId>
+				<Path>/BODY/DIV[0]/DIV[0]/DIV[4]/DIV[1]/DIV[0]/DIV[1]/TABLE[1]</Path>
+			</TableDocumentParser>
+		</DocumentParsers>
+		<RowContentParsers>
+			<AttributeRowContentParser id="BidUrlParser" name="BidUrlParser">
+				<Path>TH[0]/A[0]</Path>
+				<Attribute>HREF</Attribute>
+				<ColumnName>url</ColumnName>
+			</AttributeRowContentParser>
+		</RowContentParsers>
+	</SpiderFlow>
+	<SpiderFlow id="BidDetailParser" name="">
+		<UrlPattern>http://tw\.([a-z][0-9]\.)?page\.bid\.yahoo\.com/tw/auction/.+</UrlPattern>
+		<DocumentParsers>
+			<RepeaterDocumentParser id="DataParser" table="ItemTable" name="">
+				<RowContentParserId>PathParser</RowContentParserId>
+				<Path>
+					<FirstPath>/BODY/DIV[0]</FirstPath>
+					<NextPath>NULL[0]</NextPath>
+				</Path>
+			</RepeaterDocumentParser>
+		</DocumentParsers>
+		<RowContentParsers>
+			<RepeaterRowContentParser id="PathParser" name="">
+				<Path>
+					<FirstPath>TABLE[3]/TBODY[0]/TR[0]/TD[1]/TABLE[0]/TBODY[0]/TR[1]</FirstPath>
+					<NextPath>{following-sibling:TR}</NextPath>
+				</Path>
+				<ParsingInfo>
+					<Column>Price</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>目前出價</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+					<ValueRegex>([0-9,]+)</ValueRegex>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>NumberOfItems</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>商品數量</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+					<ValueRegex>([0-9,]+)</ValueRegex>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>BidCount</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>出價次數</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+					<ValueRegex>([0-9,]+)</ValueRegex>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>StartingPrice</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>起標價格</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+					<ValueRegex>([0-9,]+)</ValueRegex>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>ItemStatus</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>商品新舊</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>ItemLocation</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>所在地區</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>SatisfiedPrice</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>直接購買價</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+					<ValueRegex>([0-9,]+)</ValueRegex>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>ShippingFee</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>運送費用</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>StartDate</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>開始時間</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>EndDate</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>結束時間</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+				</ParsingInfo>
+				<ParsingInfo>
+					<Column>ItemId</Column>
+					<MatcherPath>TD[0]</MatcherPath>
+					<MatcherRegex>拍賣編號</MatcherRegex>
+					<ValuePath>{following-sibling:TD}</ValuePath>
+				</ParsingInfo>
+			</RepeaterRowContentParser>
+			<ConstantsRowContentParser id="ItemUrlParser" name="">
+				<Field>Url</Field>
+				<Type>URL</Type>
+			</ConstantsRowContentParser>
+			<ConstantsRowContentParser id="SourceParser" name="">
+				<Field>Source</Field>
+				<Type>any</Type>
+				<DefaultValue>Yahoo</DefaultValue>
+			</ConstantsRowContentParser>
+			<XPathRowContentParser id="OtherInfoParser" name="">
+				<Pair>
+					<Path>TABLE[3]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/A[0]</Path>
+					<ColumnName>Seller</ColumnName>
+				</Pair>
+				<Pair>
+					<Path>TABLE[3]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/B[0]/A[0]</Path>
+					<ColumnName>SellerGrade</ColumnName>
+				</Pair>
+				<Pair>
+					<Path>TABLE[1]</Path>
+					<ColumnName>Category</ColumnName>
+				</Pair>
+				<Pair>
+					<Path>TABLE[5]</Path>
+					<ColumnName>BidInfos</ColumnName>
+				</Pair>
+			</XPathRowContentParser>
+			<AttributeRowContentParser id="ThumbnailParser" name="">
+				<Path>TABLE[2]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/IMG[0]</Path>
+				<Attribute>HREF</Attribute>
+				<ColumnName>ThumbnailUrl</ColumnName>
+			</AttributeRowContentParser>
+			<PriorityXPathRowContentParser id="TitleParser" name="">
+				<Path>TABLE[2]/TBODY[0]/TR[0]/TD[1]/TABLE[0]</Path>
+				<Path>TABLE[2]/TBODY[0]/TR[0]/TD[0]/TABLE[0]</Path>
+				<ColumnName>Title</ColumnName>
+			</PriorityXPathRowContentParser>
+		</RowContentParsers>
+	</SpiderFlow>
+</Spider>

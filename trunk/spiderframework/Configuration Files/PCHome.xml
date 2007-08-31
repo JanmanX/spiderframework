@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Spider xmlns="http://fox.spider.configuration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://fox.spider.configuration
+..\SpiderConf.xsd" id="PCHome" name="PCHome Runtime">
+	<Table id="UrlTable" name="UrlTable">
+		<Column type="string" name="url"/>
+	</Table>
+	<Table id="DataItem" name="">
+		<Column type="string" name="url"/>
+		<Column type="string" name="data1"/>
+		<Column type="string" name="data2"/>
+	</Table>
+	<PageTurners starter="Starter">
+		<LinkedWebPageTurner id="URLType2PageTurner" name="">
+			<UrlPattern>http://shopping.pchome.com.tw/\?mod=store&amp;func=style_show&amp;SR_NO=[A-Z0-9]+(&amp;.+)?</UrlPattern>
+			<Path>/BODY/DIV[0]/DIV[0]/TABLE[2]/TBODY[0]/TR[1]/TD[0]/TABLE[2]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[2]/SPAN[2]/SPAN[0]/A[0]</Path>
+		</LinkedWebPageTurner>
+		<DataTableWebPageTurner id="DataTableItem" name="">
+			<UrlPattern>(http://shopping.pchome.com.tw/\?mod=store&amp;func=style_show&amp;SR_NO=[A-Z0-9]+(&amp;.+)?|http://shopping.pchome.com.tw/\?mod=item&amp;func=exhibit&amp;IT_NO=[A-Z\-0-9]+&amp;SR_NO=[A-Z0-9]+&amp;ROWNO=[0-9]+)</UrlPattern>
+			<DataTable>UrlTable</DataTable>
+			<Field>url</Field>
+		</DataTableWebPageTurner>
+		<UrlWebPageTurner id="Starter" name="">
+			<url>http://shopping.pchome.com.tw/?mod=store&amp;func=style_show&amp;SR_NO=ABAL1S</url>
+			<url>http://shopping.pchome.com.tw/?mod=store&amp;func=style_show&amp;SR_NO=AEAA3A</url>
+		</UrlWebPageTurner>
+	</PageTurners>
+	<SpiderFlow id="UrlParsingFlowType1" name="Parse Url Flow">
+		<UrlPattern>http://shopping.pchome.com.tw/\?mod=store&amp;func=style_show&amp;SR_NO=[A-Z0-9]+</UrlPattern>
+		<DocumentParsers>
+			<RepeaterDocumentParser id="Type1Repeater" table="UrlTable" name="">
+				<RowContentParserId>UrlAttributeParser</RowContentParserId>
+				<Path>
+					<FirstPath>/BODY/DIV[0]/DIV[0]/TABLE[2]/TBODY[0]/TR[1]/TD[0]/TABLE[1]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/A[0]</FirstPath>
+					<FirstPath>/BODY/DIV[0]/DIV[0]/TABLE[2]/TBODY[0]/TR[1]/TD[0]/TABLE[1]/TBODY[0]/TR[0]/TD[2]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/A[0]</FirstPath>
+					<FirstPath>/BODY/DIV[0]/DIV[0]/TABLE[2]/TBODY[0]/TR[1]/TD[0]/TABLE[1]/TBODY[0]/TR[0]/TD[2]/TABLE[0]/TBODY[0]/TR[2]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/A[0]</FirstPath>
+					<NextPath>../../../../../{following-sibling}/{following-sibling}/TABLE[0]/TBODY[0]/TR[1]/TD[0]/A[0]</NextPath>
+					<NextPath>../../../../../../../../../{following-sibling}/{following-sibling}/TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/A[0]</NextPath>
+					<NextPath>../../../../../../../../../{following-sibling}/{following-sibling}/TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/A[0]</NextPath>
+				</Path>
+			</RepeaterDocumentParser>
+		</DocumentParsers>
+		<RowContentParsers>
+			<AttributeRowContentParser id="UrlAttributeParser" name="UrlAttributeParser" isRoot="true">
+				<Path>.</Path>
+				<Attribute>HREF</Attribute>
+				<ColumnName>url</ColumnName>
+			</AttributeRowContentParser>
+		</RowContentParsers>
+	</SpiderFlow>
+	<SpiderFlow id="UrlParsingFlowType2" name="Parse Url Flow">
+		<UrlPattern>http://shopping.pchome.com.tw/\?mod=store&amp;func=style_show&amp;SR_NO=[A-Z0-9]+(&amp;.+)?</UrlPattern>
+		<DocumentParsers>
+			<RepeaterDocumentParser id="Type2Repeater" table="UrlTable" name="">
+				<RowContentParserId>Type2UrlAttributeParser1</RowContentParserId>
+				<Path>
+					<FirstPath>/BODY/DIV[0]/DIV[0]/TABLE[2]/TBODY[0]/TR[1]/TD[0]/TABLE[2]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[1]/TBODY[0]/TR[0]/TD[0]</FirstPath>
+					<NextPath>{following-sibling}/{following-sibling}/{following-sibling}</NextPath>
+					<NextPath>../../../{following-sibling}/{following-sibling}/TBODY[0]/TR[0]/TD[0]</NextPath>
+				</Path>
+			</RepeaterDocumentParser>
+		</DocumentParsers>
+		<RowContentParsers>
+			<AttributeRowContentParser id="Type2UrlAttributeParser1" name="UrlAttributeParser2" isRoot="true">
+				<Path>TABLE[0]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[2]/TD[0]/A[0]</Path>
+				<Attribute>HREF</Attribute>
+				<ColumnName>url</ColumnName>
+			</AttributeRowContentParser>
+		</RowContentParsers>
+		<RowFilters>
+			<ValueFilter id="Type1UrlFilter" docparser="Type1Repeater" name="">
+				<Constraint FieldName="url">
+					<NotNull/>
+				</Constraint>
+			</ValueFilter>
+			<ValueFilter id="Type2UrlFilter" docparser="Type2Repeater" name="">
+				<Constraint FieldName="url">
+					<NotNull/>
+				</Constraint>
+			</ValueFilter>
+		</RowFilters>
+	</SpiderFlow>
+	<SpiderFlow id="DataItemFlow" name="">
+		<UrlPattern>http://shopping.pchome.com.tw/\?mod=item&amp;func=exhibit&amp;IT_NO=[A-Z\-0-9]+&amp;SR_NO=[A-Z0-9]+&amp;ROWNO=[0-9]+</UrlPattern>
+		<DocumentParsers>
+			<RepeaterDocumentParser id="DataItemParser" table="DataItem" name="">
+				<RowContentParserId>DataItemRowParser</RowContentParserId>
+				<Path>
+					<FirstPath>/BODY/DIV[0]/DIV[0]/TABLE[2]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[0]/FORM[0]</FirstPath>
+					<NextPath>../NULL[0]</NextPath>
+				</Path>
+			</RepeaterDocumentParser>
+		</DocumentParsers>
+		<RowContentParsers>
+			<XPathRowContentParser id="DataItemRowParser" name="" isRoot="true">
+				<Pair>
+					<Path>TABLE[0]/TBODY[0]/TR[1]/TD[0]/TABLE[0]/TBODY[0]/TR[0]/TD[1]/FONT[0]</Path>
+					<ColumnName>data1</ColumnName>
+				</Pair>
+				<Pair>
+					<Path>TABLE[1]/TBODY[0]/TR[1]/TD[1]/TABLE[1]/TBODY[0]/TR[0]/TD[1]/FONT[1]</Path>
+					<ColumnName>data2</ColumnName>
+				</Pair>
+			</XPathRowContentParser>
+			<ConstantsRowContentParser id="UrlFiller" name="">
+				<Field>url</Field>
+				<Type>URL</Type>
+			</ConstantsRowContentParser>
+		</RowContentParsers>
+	</SpiderFlow>
+</Spider>
