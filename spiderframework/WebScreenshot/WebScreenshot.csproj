@@ -1,0 +1,130 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9EAFFCC7-34B7-4D1F-AB78-A9A94F412F8A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>fox.spider.screenshot</RootNamespace>
+    <AssemblyName>Spider.ScreenShot</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <SignManifests>false</SignManifests>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>Fox.WebCamera.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+    <ApplicationIcon>Internet.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxSHDocVw, Version=1.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SpiderFramework\AxSHDocVw.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageQuantization, Version=1.0.1486.27504, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ImageQuantization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="SHDocVw, Version=1.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SpiderFramework\SHDocVw.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CameraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraForm.Designer.cs">
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DHTMLEventHandler.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CameraForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraForm.zh-CHT.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RectCaptureTool.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="WebCamera.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\go2.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Internet.ico" />
+    <Content Include="Resources\go.PNG" />
+    <None Include="Resources\home3.png" />
+    <None Include="Resources\home2.png" />
+    <None Include="Resources\stop2.PNG" />
+    <None Include="Resources\refresh2.PNG" />
+    <None Include="Resources\previous2.PNG" />
+    <None Include="Resources\nex2t.PNG" />
+    <None Include="app.config" />
+    <None Include="Fox.WebCamera.pfx" />
+    <None Include="Resources\home.PNG" />
+    <None Include="Resources\refresh.PNG" />
+    <None Include="Resources\stop.PNG" />
+    <None Include="Resources\next.PNG" />
+    <None Include="Resources\previous.PNG" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

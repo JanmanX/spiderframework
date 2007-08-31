@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Administrator (EMBRACE) -->
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Fox (ORiON) -->
+<xs:schema xmlns:sp="http://fox.spider.configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fox.spider.configuration" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Spider">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Table" type="sp:TableSchema" maxOccurs="unbounded"/>
+				<xs:element name="RelationProcessors" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="sp:RelationProcessor" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PageTurners" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="sp:PageTurner" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="starter" type="xs:IDREF" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SpiderFlow" type="sp:SpiderFlow" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="sp:ItemAttributes"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentParser" type="xs:anyType" abstract="true"/>
+	<xs:element name="RowContentParser" type="xs:anyType" abstract="true"/>
+	<xs:element name="RelationProcessor" type="xs:anyType" abstract="true"/>
+	<xs:element name="PageTurner" type="xs:anyType" abstract="true"/>
+	<xs:element name="RowFilter" type="xs:anyType" abstract="true"/>
+	<xs:complexType name="SpiderFlow">
+		<xs:sequence>
+			<xs:element name="UrlPattern" type="xs:string"/>
+			<xs:element name="DocumentParsers">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="sp:DocumentParser" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RowContentParsers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="sp:RowContentParser" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RowFilters" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="sp:RowFilter" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="sp:ItemAttributes"/>
+	</xs:complexType>
+	<xs:element name="CellBasedDocumentParser" substitutionGroup="sp:DocumentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:DocumentParserItem">
+					<xs:sequence>
+						<xs:element name="RowContentParserId" type="xs:IDREF"/>
+						<xs:element name="Path">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="RowFirstPath" type="xs:string" maxOccurs="unbounded"/>
+									<xs:element name="RowNextPath" type="xs:string" maxOccurs="unbounded"/>
+									<xs:element name="CellFirstPath" type="xs:string" maxOccurs="unbounded"/>
+									<xs:element name="CellNextPath" type="xs:string" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RepeaterDocumentParser" substitutionGroup="sp:DocumentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:DocumentParserItem">
+					<xs:sequence>
+						<xs:element name="RowContentParserId" type="xs:IDREF"/>
+						<xs:element name="Path">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="FirstPath" type="xs:string" maxOccurs="unbounded"/>
+									<xs:element name="NextPath" type="xs:string" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ForeignKeyRelationProcessor" type="sp:ForeignKeyRelationProcessor" substitutionGroup="sp:RelationProcessor"/>
+	<xs:element name="TableDocumentParser" substitutionGroup="sp:DocumentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:DocumentParserItem">
+					<xs:sequence>
+						<xs:element name="RowContentParserId" type="xs:IDREF"/>
+						<xs:element name="Path" type="xs:string"/>
+						<xs:element name="StartRow" type="xs:int" minOccurs="0"/>
+						<xs:element name="EndRow" type="xs:int" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AttributeRowContentParser" substitutionGroup="sp:RowContentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowContentParserItem">
+					<xs:sequence>
+						<xs:element name="Path" type="xs:string"/>
+						<xs:element name="Attribute" type="xs:string"/>
+						<xs:element name="ColumnName" type="xs:string"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="XPathRowContentParser" substitutionGroup="sp:RowContentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowContentParserItem">
+					<xs:sequence>
+						<xs:element name="Trim" minOccurs="0"/>
+						<xs:element name="Pair" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Path" type="xs:string"/>
+									<xs:element name="ColumnName" type="xs:string"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RegexRowContentParser" substitutionGroup="sp:RowContentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowContentParserItem">
+					<xs:sequence>
+						<xs:element name="Path" type="xs:string"/>
+						<xs:element name="Pair" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Regex" type="xs:string"/>
+									<xs:element name="ColumnName" type="xs:string"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="matchHTML" type="xs:boolean" use="optional"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PriorityXPathRowContentParser" substitutionGroup="sp:RowContentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowContentParserItem">
+					<xs:sequence>
+						<xs:element name="Path" type="xs:string" maxOccurs="unbounded"/>
+						<xs:element name="ColumnName" type="xs:string"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConstantsRowContentParser" substitutionGroup="sp:RowContentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowContentParserItem">
+					<xs:sequence>
+						<xs:element name="Field" type="xs:string"/>
+						<xs:element name="Type">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="URL"/>
+									<xs:enumeration value="any"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="DefaultValue" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RepeaterRowContentParser" substitutionGroup="sp:RowContentParser">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowContentParserItem">
+					<xs:sequence>
+						<xs:element name="Path">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="FirstPath" type="xs:string" maxOccurs="unbounded"/>
+									<xs:element name="NextPath" type="xs:string" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ParsingInfo" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Column" type="xs:string"/>
+									<xs:element name="MatcherPath" type="xs:string"/>
+									<xs:element name="MatcherRegex" type="xs:string" minOccurs="0"/>
+									<xs:element name="ValuePath" type="xs:string"/>
+									<xs:element name="ValueRegex" type="xs:string" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LinkedWebPageTurner" substitutionGroup="sp:PageTurner">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:PageTurnerItem">
+					<xs:sequence>
+						<xs:element name="Path" type="xs:string"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NamedWebPageTurner" substitutionGroup="sp:PageTurner">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:PageTurnerItem">
+					<xs:sequence>
+						<xs:element name="Path" type="xs:string"/>
+						<xs:element name="Text" type="xs:string"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UrlWebPageTurner" substitutionGroup="sp:PageTurner">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:PageTurnerItem">
+					<xs:sequence>
+						<xs:element name="url" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DataTableWebPageTurner" substitutionGroup="sp:PageTurner">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:PageTurnerItem">
+					<xs:sequence>
+						<xs:element name="DataTable" type="xs:IDREF"/>
+						<xs:element name="Field" type="xs:string"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ForeignKeyRelationProcessor">
+		<xs:complexContent>
+			<xs:extension base="sp:SpiderItem">
+				<xs:sequence>
+					<xs:element name="Parent">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Table" type="xs:IDREF"/>
+								<xs:element name="Column" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Child">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Table" type="xs:IDREF"/>
+								<xs:element name="Column" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ValueFilter" substitutionGroup="sp:RowFilter">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sp:RowFilterItem">
+					<xs:sequence>
+						<xs:element name="Constraint" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:choice>
+									<xs:element name="NotNull"/>
+									<xs:element name="Regexp" type="xs:string"/>
+								</xs:choice>
+								<xs:attribute name="FieldName" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="ItemAttributes">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:attributeGroup>
+	<xs:complexType name="TableSchema">
+		<xs:sequence>
+			<xs:element name="Column" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="type" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="string"/>
+								<xs:enumeration value="int"/>
+								<xs:enumeration value="float"/>
+								<xs:enumeration value="double"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="sp:ItemAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="SpiderItem">
+		<xs:attributeGroup ref="sp:ItemAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="DocumentParserItem">
+		<xs:complexContent>
+			<xs:extension base="sp:SpiderItem">
+				<xs:attribute name="table" type="xs:IDREF" use="required"/>
+				<xs:attribute name="relation" type="xs:IDREF" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RowFilterItem">
+		<xs:complexContent>
+			<xs:extension base="sp:SpiderItem">
+				<xs:attribute name="docparser" type="xs:IDREF" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RowContentParserItem">
+		<xs:complexContent>
+			<xs:extension base="sp:SpiderItem">
+				<xs:attribute name="isRoot" type="xs:boolean" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PageTurnerItem">
+		<xs:complexContent>
+			<xs:extension base="sp:SpiderItem">
+				<xs:sequence>
+					<xs:element name="UrlPattern" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="delay" type="xs:int" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>
