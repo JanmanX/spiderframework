@@ -1,4 +1,4 @@
-#summary What is Spider Framework project do??
+#summary What does Spider Framework project do??
 #labels Featured
 
 Spider Framework project is the core of Spider.Net. It contains the following 4 interface:
