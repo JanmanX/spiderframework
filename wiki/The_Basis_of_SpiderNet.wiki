@@ -1,0 +1,4 @@
+#summary Is the basis of Spider.Net the XPath??
+#labels Featured,Phase-Design
+
+Yes. The basis of Spider.Net is the XPath. But this XPath is a little different to XPath proposed by W3C. We wrote another XPath parser and evaluator and named it SPath, an abbreviation of Spider Path which is another project. Basically, they are very similar to each other, such as syntax, basic axes, etc. The main difference between them is Spider Path implements a small subset of XPath spec. The reason we only implement a small subset is that we don't have enough resources to finish them and some XPath functions, predicates, or axes are not suitable for HTML DOM. So, we build another project to do so. If you want to support whatever functions, axes, or predicates, you are welcome to implement them and add them to the instance of SPath. 
