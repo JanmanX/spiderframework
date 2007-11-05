@@ -30,12 +30,12 @@
   <ItemGroup>
     <Reference Include="AxSHDocVw, Version=1.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SpiderFramework\bin\Release\AxSHDocVw.dll</HintPath>
+      <HintPath>..\SpiderFramework\AxSHDocVw.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="SHDocVw, Version=1.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SpiderFramework\bin\Release\SHDocVw.dll</HintPath>
+      <HintPath>..\SpiderFramework\SHDocVw.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
