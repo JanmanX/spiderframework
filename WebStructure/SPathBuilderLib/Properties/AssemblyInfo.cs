@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SPathBuilderLib")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SPath Builder")]
+[assembly: AssemblyDescription("A library for building a spath.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IIS @ Academia Sinica")]
-[assembly: AssemblyProduct("SPathBuilderLib")]
-[assembly: AssemblyCopyright("Copyright © IIS @ Academia Sinica 2007")]
+[assembly: AssemblyCompany("Hsun-Cheng Hu")]
+[assembly: AssemblyProduct("SPath Builder")]
+[assembly: AssemblyCopyright("Copyright Reserved by Hsun-Cheng Hu")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

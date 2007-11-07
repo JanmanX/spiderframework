@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WebStructure")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("WebStructure displays the HTML DOM structure of a web page.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IIS @ Academia Sinica")]
+[assembly: AssemblyCompany("Hsun-Cheng Hu")]
 [assembly: AssemblyProduct("WebStructure")]
-[assembly: AssemblyCopyright("Copyright © IIS @ Academia Sinica 2007")]
+[assembly: AssemblyCopyright("Copyright Reserved by Hsun-Cheng Hu")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
