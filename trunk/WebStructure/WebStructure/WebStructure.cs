@@ -187,12 +187,17 @@ namespace fox.spider.path.builder.ui
         #region Main Functions
         private void reloadTree()
         {
+            IHTMLDocument2 oDoc = (IHTMLDocument2)m_Browser.Document;
+            if (oDoc.body == null)
+            {
+                return;
+            }
             logText("start to reconstruct structure tree.");
             m_NodeCount = 0;
             m_StructureTree.Nodes.Clear();
             m_AttributeList.Items.Clear();
             m_ActiveNode = null;
-            IHTMLDocument2 oDoc = (IHTMLDocument2)m_Browser.Document;
+            
             TreeNode oBody = displayNode((IHTMLDOMNode)oDoc.body);
             m_StructureTree.Nodes.Add(oBody);
             logText("structure tree construction finished. " + m_NodeCount + " nodes created.");
@@ -288,11 +293,7 @@ namespace fox.spider.path.builder.ui
             return oItem;
         }
 
-        #endregion
-
-        #region selection event handler
-
-        private void m_StructureTree_AfterSelect(object sender, TreeViewEventArgs e)
+        private void markSelection()
         {
             /// put the feedback border on.
             IHTMLDOMNode oElem = (IHTMLDOMNode)m_StructureTree.SelectedNode.Tag;
@@ -306,7 +307,7 @@ namespace fox.spider.path.builder.ui
             m_ActiveAttribute = null;
         }
 
-        private void m_StructureTree_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        private void unmarkSelection()
         {
             if (m_StructureTree.SelectedNode == null)
                 return;
@@ -316,6 +317,22 @@ namespace fox.spider.path.builder.ui
             {
                 ((IHTMLElement)oElem).style.border = "";
             }
+            m_ActiveNode = null;
+            m_ActiveAttribute = null;
+        }
+
+        #endregion
+
+        #region selection event handler
+
+        private void m_StructureTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            markSelection();
+        }
+
+        private void m_StructureTree_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            unmarkSelection();
         }
 
         private void m_AttributeList_SelectedIndexChanged(object sender, EventArgs e)
@@ -344,6 +361,21 @@ namespace fox.spider.path.builder.ui
                 IHTMLDOMNode2 oNode2 = (IHTMLDOMNode2)m_ActiveNode;
                 logText("URL: " + ((IHTMLDocument2)oNode2.ownerDocument).url);
             }
+        }
+
+        private void m_ReloadAttribute_Click(object sender, EventArgs e)
+        {
+            if (m_ActiveNode != null)
+            {
+                reloadAttribute(m_ActiveNode);
+            }
+            
+        }
+
+        private void m_ReloadStructure_Click(object sender, EventArgs e)
+        {
+            unmarkSelection();
+            reloadTree();
         }
     }
 }

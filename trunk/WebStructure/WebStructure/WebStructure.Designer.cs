@@ -54,6 +54,10 @@ namespace fox.spider.path.builder.ui
             this.m_PathLbl = new System.Windows.Forms.ToolStripLabel();
             this.m_Path = new System.Windows.Forms.ToolStripTextBox();
             this.m_BuildBtn = new System.Windows.Forms.ToolStripButton();
+            this.m_StructureToolBar = new System.Windows.Forms.ToolStrip();
+            this.m_ReloadStructure = new System.Windows.Forms.ToolStripButton();
+            this.m_AttributeToolbar = new System.Windows.Forms.ToolStrip();
+            this.m_ReloadAttribute = new System.Windows.Forms.ToolStripButton();
             this.m_StatusStrip.SuspendLayout();
             this.m_BrowserStrip.SuspendLayout();
             this.m_ToolStripContainer.ContentPanel.SuspendLayout();
@@ -66,6 +70,8 @@ namespace fox.spider.path.builder.ui
             this.m_ContentSpliter.SuspendLayout();
             this.m_URLStrip.SuspendLayout();
             this.m_PathStrip.SuspendLayout();
+            this.m_StructureToolBar.SuspendLayout();
+            this.m_AttributeToolbar.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_StatusStrip
@@ -85,6 +91,7 @@ namespace fox.spider.path.builder.ui
             // 
             // m_BrowserStrip
             // 
+            this.m_BrowserStrip.AllowMerge = false;
             this.m_BrowserStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.m_BrowserStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.m_BrowserStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -187,10 +194,12 @@ namespace fox.spider.path.builder.ui
             // m_ContentSpliter.Panel1
             // 
             this.m_ContentSpliter.Panel1.Controls.Add(this.m_StructureTree);
+            this.m_ContentSpliter.Panel1.Controls.Add(this.m_StructureToolBar);
             // 
             // m_ContentSpliter.Panel2
             // 
             this.m_ContentSpliter.Panel2.Controls.Add(this.m_AttributeList);
+            this.m_ContentSpliter.Panel2.Controls.Add(this.m_AttributeToolbar);
             this.m_ContentSpliter.Panel2.Controls.Add(this.m_AttributeLbl);
             this.m_ContentSpliter.Size = new System.Drawing.Size(226, 418);
             this.m_ContentSpliter.SplitterDistance = 205;
@@ -200,9 +209,9 @@ namespace fox.spider.path.builder.ui
             // 
             this.m_StructureTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_StructureTree.HideSelection = false;
-            this.m_StructureTree.Location = new System.Drawing.Point(0, 0);
+            this.m_StructureTree.Location = new System.Drawing.Point(0, 25);
             this.m_StructureTree.Name = "m_StructureTree";
-            this.m_StructureTree.Size = new System.Drawing.Size(226, 205);
+            this.m_StructureTree.Size = new System.Drawing.Size(226, 180);
             this.m_StructureTree.TabIndex = 0;
             this.m_StructureTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_StructureTree_AfterSelect);
             this.m_StructureTree.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.m_StructureTree_BeforeSelect);
@@ -216,10 +225,10 @@ namespace fox.spider.path.builder.ui
             this.m_ListViewExpandoColumn});
             this.m_AttributeList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_AttributeList.FullRowSelect = true;
-            this.m_AttributeList.Location = new System.Drawing.Point(0, 12);
+            this.m_AttributeList.Location = new System.Drawing.Point(0, 37);
             this.m_AttributeList.MultiSelect = false;
             this.m_AttributeList.Name = "m_AttributeList";
-            this.m_AttributeList.Size = new System.Drawing.Size(226, 197);
+            this.m_AttributeList.Size = new System.Drawing.Size(226, 172);
             this.m_AttributeList.TabIndex = 0;
             this.m_AttributeList.UseCompatibleStateImageBehavior = false;
             this.m_AttributeList.View = System.Windows.Forms.View.Details;
@@ -248,6 +257,7 @@ namespace fox.spider.path.builder.ui
             // 
             // m_URLStrip
             // 
+            this.m_URLStrip.AllowMerge = false;
             this.m_URLStrip.AutoSize = false;
             this.m_URLStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.m_URLStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -287,6 +297,7 @@ namespace fox.spider.path.builder.ui
             // 
             // m_PathStrip
             // 
+            this.m_PathStrip.AllowMerge = false;
             this.m_PathStrip.AutoSize = false;
             this.m_PathStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.m_PathStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -295,7 +306,7 @@ namespace fox.spider.path.builder.ui
             this.m_BuildBtn});
             this.m_PathStrip.Location = new System.Drawing.Point(3, 56);
             this.m_PathStrip.Name = "m_PathStrip";
-            this.m_PathStrip.Size = new System.Drawing.Size(653, 25);
+            this.m_PathStrip.Size = new System.Drawing.Size(147, 25);
             this.m_PathStrip.TabIndex = 0;
             this.m_PathStrip.Text = "toolStrip1";
             // 
@@ -319,9 +330,48 @@ namespace fox.spider.path.builder.ui
             this.m_BuildBtn.Image = ((System.Drawing.Image)(resources.GetObject("m_BuildBtn.Image")));
             this.m_BuildBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_BuildBtn.Name = "m_BuildBtn";
-            this.m_BuildBtn.Size = new System.Drawing.Size(35, 22);
+            this.m_BuildBtn.Size = new System.Drawing.Size(35, 16);
             this.m_BuildBtn.Text = "Build";
             this.m_BuildBtn.Click += new System.EventHandler(this.m_BuildBtn_Click);
+            // 
+            // m_StructureToolBar
+            // 
+            this.m_StructureToolBar.AllowMerge = false;
+            this.m_StructureToolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_ReloadStructure});
+            this.m_StructureToolBar.Location = new System.Drawing.Point(0, 0);
+            this.m_StructureToolBar.Name = "m_StructureToolBar";
+            this.m_StructureToolBar.Size = new System.Drawing.Size(226, 25);
+            this.m_StructureToolBar.TabIndex = 1;
+            this.m_StructureToolBar.Text = "toolStrip1";
+            // 
+            // m_ReloadStructure
+            // 
+            this.m_ReloadStructure.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_ReloadStructure.Image = global::fox.spider.path.builder.ui.Properties.Resources.refresh2;
+            this.m_ReloadStructure.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_ReloadStructure.Name = "m_ReloadStructure";
+            this.m_ReloadStructure.Size = new System.Drawing.Size(23, 22);
+            this.m_ReloadStructure.Click += new System.EventHandler(this.m_ReloadStructure_Click);
+            // 
+            // m_AttributeToolbar
+            // 
+            this.m_AttributeToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_ReloadAttribute});
+            this.m_AttributeToolbar.Location = new System.Drawing.Point(0, 12);
+            this.m_AttributeToolbar.Name = "m_AttributeToolbar";
+            this.m_AttributeToolbar.Size = new System.Drawing.Size(226, 25);
+            this.m_AttributeToolbar.TabIndex = 2;
+            this.m_AttributeToolbar.Text = "toolStrip1";
+            // 
+            // m_ReloadAttribute
+            // 
+            this.m_ReloadAttribute.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_ReloadAttribute.Image = global::fox.spider.path.builder.ui.Properties.Resources.refresh2;
+            this.m_ReloadAttribute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_ReloadAttribute.Name = "m_ReloadAttribute";
+            this.m_ReloadAttribute.Size = new System.Drawing.Size(23, 22);
+            this.m_ReloadAttribute.Click += new System.EventHandler(this.m_ReloadAttribute_Click);
             // 
             // WebStructure
             // 
@@ -347,12 +397,18 @@ namespace fox.spider.path.builder.ui
             this.m_SplitPane.Panel1.ResumeLayout(false);
             this.m_SplitPane.ResumeLayout(false);
             this.m_ContentSpliter.Panel1.ResumeLayout(false);
+            this.m_ContentSpliter.Panel1.PerformLayout();
             this.m_ContentSpliter.Panel2.ResumeLayout(false);
+            this.m_ContentSpliter.Panel2.PerformLayout();
             this.m_ContentSpliter.ResumeLayout(false);
             this.m_URLStrip.ResumeLayout(false);
             this.m_URLStrip.PerformLayout();
             this.m_PathStrip.ResumeLayout(false);
             this.m_PathStrip.PerformLayout();
+            this.m_StructureToolBar.ResumeLayout(false);
+            this.m_StructureToolBar.PerformLayout();
+            this.m_AttributeToolbar.ResumeLayout(false);
+            this.m_AttributeToolbar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,5 +441,9 @@ namespace fox.spider.path.builder.ui
         private System.Windows.Forms.ColumnHeader m_ListViewValueColumn;
         private System.Windows.Forms.ColumnHeader m_ListViewExpandoColumn;
         private System.Windows.Forms.Label m_AttributeLbl;
+        private System.Windows.Forms.ToolStrip m_StructureToolBar;
+        private System.Windows.Forms.ToolStripButton m_ReloadStructure;
+        private System.Windows.Forms.ToolStrip m_AttributeToolbar;
+        private System.Windows.Forms.ToolStripButton m_ReloadAttribute;
     }
 }
