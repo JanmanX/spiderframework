@@ -1,4 +1,4 @@
-#summary Web Screen-shot captures a web screen for you.
+#summary Web Screen-shot captures a web screen for you(Multilingual Supported).
 #labels Featured
 
 Web Screenshot is a single project in Spider.Net. You may use it without other projects. Web Screenshot takes a screen shot of a web-site. Just filling url and clicking save, you can have a screen shot of your web site.
