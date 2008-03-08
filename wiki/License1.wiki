@@ -1,4 +1,4 @@
-#summary License of Spider Framework=
+#summary License of Spider Framework
 #labels Phase-Requirements
 
 What is the license of Spider Framework??
