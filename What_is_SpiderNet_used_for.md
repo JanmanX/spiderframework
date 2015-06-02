@@ -1,0 +1,3 @@
+Web Server interoperability is more and more important recently. Web Services, XML over Http, Ontology, RDF, OWL, etc are enabling technology to this goal. There are only a few web site supports interoperability, such as Google, Youtube, etc. But, there are still a plenty of web sites running on HTML based technologies which render pure HTML or JavaScript to user. This is the origin of Spider.Net.
+
+Spider.Net helps you to parse data on web. The data parsed by Spider.Net is stored in a DataSet of .Net Framework. You can transform it to database. With this data, you can do anything you want.

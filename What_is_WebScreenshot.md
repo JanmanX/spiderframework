@@ -1,0 +1,3 @@
+Web Screenshot is a single project in Spider.Net. You may use it without other projects. Web Screenshot takes a screen shot of a web-site. Just filling url and clicking save, you can have a screen shot of your web site.
+
+A screen shot of Web Screenshot is in: [screen shot](http://huchengtw.googlepages.com/webscreenshot.jpg). The result is in: [spiderframework](http://huchengtw.googlepages.com/spiderframework.jpg)

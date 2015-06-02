@@ -1,0 +1,1 @@
+Yes, it does. Spider.Net utilizes Web Browser control which is named SHDocVw or WebBrowser in .Net 2.0 to crawl data.  With a web browser control, Spider.Net has the ability to run javascript in it. It is very important to know that Spider.Net allows javascript execution but disables all pop-up windows, ie. alert, confirm, prompt, new window, in default.
